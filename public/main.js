@@ -5,7 +5,7 @@ form.addEventListener('submit', (e) => {
     const choice = document.querySelector('input[name=os]:checked').value;
     const data = { os: choice }
 
-    fetch('http://localhost:5000/poll', {
+    fetch('http://localhost:3000/poll', {
         method: 'post',
         body: JSON.stringify(data),
         headers: new Headers({
@@ -19,13 +19,21 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
 })
 
-// canvasJs
+fetch('http://localhost:3000/poll')
+.then(res => res.json())
+.then(data => {
+    const votes = data.votes
+    const totalVotes = votes.length
+    // count votes points - acc / current
+    const voteCounts = votes.reduce((acc, vote)=>((acc[vote.os]= (acc[vote.os] || 0) + parseInt(vote.points)), acc),{})
+
+    // canvasJs
 
 let dataPoints = [
-    {label: 'Windows', y:0},
-    {label: 'MacOs', y:0},
-    {label: 'Linux', y:0},
-    {label: 'Other', y:0},
+    {label: 'Windows', y: voteCounts.Windows},
+    {label: 'MacOs', y: voteCounts.MacOs},
+    {label: 'Linux', y: voteCounts.Linux},
+    {label: 'Other', y: voteCounts.Other},
 ];
 
 const chartContainer = document.querySelector('#chartContainer')
@@ -35,7 +43,7 @@ if(chartContainer){
         animationEnabled: true,
         theme: 'theme1',
         title:{
-            text: 'OS Results'
+            text: `Total Votes ${totalVotes}`
         },
         data: [
             {
@@ -66,3 +74,5 @@ if(chartContainer){
       chart.render();
     });
 }
+})
+
