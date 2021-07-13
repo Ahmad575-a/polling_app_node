@@ -8,8 +8,8 @@ const Vote = require('../models/Vote')
 const Pusher = require('pusher')
 const pusher = new Pusher({
     appId: "1203974",
-    key: "cee11e983a5b34f0291f",
-    secret: "7dad4bb232088ac176f9",
+    key: process.env.KEY,
+    secret: process.env.SECRET,
     cluster: "eu",
     useTLS: true
   });

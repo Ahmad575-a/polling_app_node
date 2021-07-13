@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
+require('dotenv').config()
 
-
-mongoose.connect('mongodb+srv://admin:admin@cluster0.fcrdg.mongodb.net/firstDB')
+mongoose.connect(process.env.DB_URL)
 .then(()=> console.log('MongoDB connected ..'))
 .catch(err=>console.log(err))
